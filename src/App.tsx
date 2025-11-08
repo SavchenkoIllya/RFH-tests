@@ -7,7 +7,15 @@ function App() {
     <Container>
       <Stack spacing={2}>
         <Typography variant={"h5"}>Form tests</Typography>
-        <FormOnePage />
+        <FormOnePage label={"Submit form one"} />
+        <FormOnePage
+          label={"Submit form one with defaults"}
+          defaultFormValues={{
+            firstName: "Joh",
+            lastName: "Doe",
+            email: "email@email.lo",
+          }}
+        />
         <FormTwoPage />
       </Stack>
     </Container>

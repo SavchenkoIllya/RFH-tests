@@ -8,7 +8,7 @@ import { FormTextInput, ReusableNamesFieldsGroups } from "../components";
 import { FormHandlers, SharedFormProps } from "../types";
 
 const DEFAULT_FORM_TWO_VALUES: FormTwoValues = {
-  userData: SHARED_DEFAULTS, // {...SHARED_DEFAULTS}
+  userData: SHARED_DEFAULTS,
   amountOfUsers: 1,
 };
 
@@ -24,7 +24,7 @@ export const FormTwo = forwardRef<FormHandlers, FormTwoProps>(
       validators,
       onSubmit,
       onValidChange,
-      // onTouchedChange,
+      onTouchedChange,
       onDirtyChange,
     },
     ref,
@@ -40,7 +40,7 @@ export const FormTwo = forwardRef<FormHandlers, FormTwoProps>(
     const {
       handleSubmit,
       reset,
-      formState: { isValid, isDirty },
+      formState: { isValid, isDirty, touchedFields },
     } = formMethods;
 
     useImperativeHandle(
@@ -49,12 +49,8 @@ export const FormTwo = forwardRef<FormHandlers, FormTwoProps>(
         submit: handleSubmit(onSubmit),
         reset,
       }),
-      [],
+      [onSubmit],
     );
-
-    useEffect(() => {
-      onValidChange?.(isValid);
-    }, [isValid]);
 
     useEffect(() => {
       onValidChange?.(isValid);
@@ -64,20 +60,22 @@ export const FormTwo = forwardRef<FormHandlers, FormTwoProps>(
       onDirtyChange?.(isDirty);
     }, [isDirty]);
 
+    useEffect(() => {
+      onTouchedChange?.(touchedFields);
+    }, [touchedFields]);
+
     return (
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(console.log)}>
-          <Stack spacing={2}>
-            <ReusableNamesFieldsGroups prefix={"userData"} />
-            <FormTextInput
-              name={"amountOfUsers"}
-              fieldProps={{
-                label: "Ammount of users | Just dont touch",
-                type: "number",
-              }}
-            />
-          </Stack>
-        </form>
+        <Stack spacing={2}>
+          <ReusableNamesFieldsGroups prefix={"userData"} />
+          <FormTextInput
+            name={"amountOfUsers"}
+            fieldProps={{
+              label: "Ammount of users | Just dont touch",
+              type: "number",
+            }}
+          />
+        </Stack>
       </FormProvider>
     );
   },

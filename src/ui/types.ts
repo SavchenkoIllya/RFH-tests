@@ -1,3 +1,4 @@
+import type { FieldNamesMarkedBoolean, FieldValues } from "react-hook-form";
 import { z } from "zod";
 import { $ZodType, $ZodTypeInternals } from "zod/v4/core";
 
@@ -7,7 +8,7 @@ export type FormHandlers = {
 };
 
 export type SharedFormProps<
-  FormValues,
+  FormValues extends FieldValues,
   FormValidatorsType extends Readonly<{
     [k: string]: $ZodType<
       unknown,
@@ -20,11 +21,9 @@ export type SharedFormProps<
 
   defaultFormValues?: FormValues;
   onValidChange?: (isValid: boolean) => void;
-
-  // История на подумать
-  // onTouchedChange?: (
-  //   touchedFields: Partial<Record<keyof FormValues, boolean>>,
-  // ) => void;
+  onTouchedChange?: (
+    touchedFields: Partial<FieldNamesMarkedBoolean<FormValues>>,
+  ) => void;
   onDirtyChange?: (isDirty: boolean) => void;
 
   // Валидация может меняться, но ключи/типы полей — как у formOneSchema

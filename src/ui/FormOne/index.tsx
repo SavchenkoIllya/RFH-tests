@@ -28,6 +28,7 @@ export const FormOne = forwardRef<FormHandlers, FormOneProps>(
       onSubmit,
       onValidChange,
       onDirtyChange,
+      onTouchedChange,
     },
     ref,
   ) => {
@@ -52,12 +53,8 @@ export const FormOne = forwardRef<FormHandlers, FormOneProps>(
         submit: handleSubmit(onSubmit),
         reset,
       }),
-      [],
+      [onSubmit],
     );
-
-    useEffect(() => {
-      onValidChange?.(isValid);
-    }, [isValid]);
 
     useEffect(() => {
       onValidChange?.(isValid);
@@ -67,12 +64,14 @@ export const FormOne = forwardRef<FormHandlers, FormOneProps>(
       onDirtyChange?.(isDirty);
     }, [isDirty]);
 
+    useEffect(() => {
+      onTouchedChange?.(touchedFields);
+    }, [JSON.stringify(touchedFields)]);
+
     return (
       // Все поля обязательно должны быть врапнуты в провайдер, чтобы инпуты могли внутри себя юзать свои хуки
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(console.log)}>
-          <FormOneContent />
-        </form>
+        <FormOneContent />
       </FormProvider>
     );
   },

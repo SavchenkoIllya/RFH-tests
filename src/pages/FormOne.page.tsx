@@ -1,18 +1,34 @@
 import { Box, Button, Stack } from "@mui/material";
 import { useRef, useState } from "react";
-import { FormOne } from "../ui/FormOne";
+import { FormOne, FormOneProps } from "../ui/FormOne";
 import { FormHandlers } from "../ui/types";
+import { FormOneValues } from "../utils";
 
-export const FormOnePage = () => {
+export const FormOnePage = ({
+  label,
+  defaultFormValues,
+}: {
+  label: string;
+  defaultFormValues?: FormOneProps["defaultFormValues"];
+}) => {
   const formOneRef = useRef<FormHandlers>(null);
   const [isValid, setValid] = useState(false);
+  const [isEqualDefaults, setEqualDefault] = useState(true);
+
+  const handleSubmit = (values: FormOneValues) => {
+    isEqualDefaults
+      ? window.alert("Equal to default" + JSON.stringify(values))
+      : window.alert("Not equal to default" + JSON.stringify(values));
+  };
 
   return (
     <Stack spacing={1}>
       <FormOne
         ref={formOneRef}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={handleSubmit}
+        onDirtyChange={(value) => setEqualDefault(!value)}
         onValidChange={setValid}
+        defaultFormValues={defaultFormValues}
       />
       <Box>
         <Button
@@ -20,7 +36,7 @@ export const FormOnePage = () => {
           disabled={!isValid}
           onClick={() => formOneRef.current?.submit()}
         >
-          Submit form one
+          {label}
         </Button>
       </Box>
     </Stack>
