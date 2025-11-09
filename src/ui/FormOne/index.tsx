@@ -1,14 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { formOneSchema, FormOneValues, SharedValues } from "../../utils";
+import { formOneSchema, FormOneValues } from "../../utils";
+import { SHARED_DEFAULTS } from "../components";
 import { FormHandlers, SharedFormProps } from "../types";
 import { FormOneContent } from "./FormOne.content";
-
-export const SHARED_DEFAULTS: SharedValues = {
-  firstName: "",
-  lastName: "",
-};
 
 const DEFAULT_FORM_ONE_VALUES: FormOneValues = {
   ...SHARED_DEFAULTS,

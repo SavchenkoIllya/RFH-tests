@@ -1,31 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Stack } from "@mui/material";
 import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { formTwoSchema, FormTwoValues } from "../../utils";
-import {
-  FormTextInput,
-  ReusableNamesFieldsGroups,
-  SHARED_DEFAULTS,
-} from "../components";
+import { formArraySchema, FormArrayValues } from "../../utils";
 import { FormHandlers, SharedFormProps } from "../types";
+import { FormArrayRenderer } from "./FormArray.Renderer";
 
-const DEFAULT_FORM_TWO_VALUES: FormTwoValues = {
-  userData: {
-    data: SHARED_DEFAULTS,
-  },
-  amountOfUsers: 1,
+const DEFAULT_FORM_THREE_VALUES: FormArrayValues = {
+  userData: [],
 };
 
-export type FormTwoProps = SharedFormProps<
-  FormTwoValues,
-  typeof formTwoSchema.shape
+export type FormThreeProps = SharedFormProps<
+  FormArrayValues,
+  typeof formArraySchema.shape
 >;
 
-export const FormTwo = forwardRef<FormHandlers, FormTwoProps>(
+export const FormThree = forwardRef<FormHandlers, FormThreeProps>(
   (
     {
-      defaultFormValues = DEFAULT_FORM_TWO_VALUES,
+      defaultFormValues = DEFAULT_FORM_THREE_VALUES,
       validators,
       onSubmit,
       onValidChange,
@@ -37,7 +29,7 @@ export const FormTwo = forwardRef<FormHandlers, FormTwoProps>(
     const formMethods = useForm({
       resolver: validators
         ? zodResolver(validators)
-        : zodResolver(formTwoSchema),
+        : zodResolver(formArraySchema),
       mode: "onChange",
       defaultValues: defaultFormValues,
     });
@@ -71,21 +63,7 @@ export const FormTwo = forwardRef<FormHandlers, FormTwoProps>(
 
     return (
       <FormProvider {...formMethods}>
-        <Stack spacing={2}>
-          <ReusableNamesFieldsGroups
-            map={{
-              firstName: "userData.data.firstName",
-              lastName: "userData.data.lastName",
-            }}
-          />
-          <FormTextInput
-            name={"amountOfUsers"}
-            fieldProps={{
-              label: "Ammount of users | Just dont touch",
-              type: "number",
-            }}
-          />
-        </Stack>
+        <FormArrayRenderer />
       </FormProvider>
     );
   },

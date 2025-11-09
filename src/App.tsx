@@ -1,4 +1,5 @@
 import { Container, Stack, Typography } from "@mui/material";
+import { FormArrayPage } from "./pages/FormArray.page";
 import { FormOnePage } from "./pages/FormOne.page";
 import { FormTwoPage } from "./pages/FormTwo.page";
 
@@ -17,6 +18,7 @@ function App() {
           }}
         />
         <FormTwoPage />
+        <FormArrayPage />
       </Stack>
     </Container>
   );

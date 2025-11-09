@@ -8,13 +8,19 @@ export const FormTextInput = ({
   name: string;
   fieldProps?: TextFieldProps;
 }) => {
-  const { getFieldState, register } = useFormContext();
+  const { setValue, getFieldState } = useFormContext();
   const { error, invalid } = getFieldState(name);
   const value = useWatch({ name });
 
   return (
     <TextField
-      {...register(name)}
+      onChange={(event) =>
+        setValue(name, event.target.value, {
+          shouldValidate: true,
+          shouldTouch: true,
+          shouldDirty: true,
+        })
+      }
       value={value}
       error={invalid}
       helperText={error?.message}

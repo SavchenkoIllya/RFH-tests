@@ -24,8 +24,16 @@ export const formOneSchema = z
 export type FormOneValues = z.infer<typeof formOneSchema>;
 
 export const formTwoSchema = z.object({
-  userData: sharedSchema,
+  userData: z.object({
+    data: sharedSchema,
+  }),
   amountOfUsers: z.number().min(0),
 });
 
 export type FormTwoValues = z.infer<typeof formTwoSchema>;
+
+export const formArraySchema = z.object({
+  userData: z.array(sharedSchema.extend({ id: z.number() })).nonempty(),
+});
+
+export type FormArrayValues = z.infer<typeof formArraySchema>;
